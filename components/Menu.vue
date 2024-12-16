@@ -23,174 +23,54 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { ref, onMounted, onBeforeUnmount } from "vue";
+
 export default {
   name: "Menu",
-  data() {
-    return {
-      menuOpened: false,
-      isDesktop: false,
+  setup() {
+    const menuOpened = ref(false);
+    const isDesktop = ref(false);
+
+    const menuToggle = (): void => {
+      menuOpened.value = !menuOpened.value;
     };
-  },
-  methods: {
-    menuToggle() {
-      this.menuOpened = !this.menuOpened;
-    },
-    closeMenu() {
-      this.menuOpened = false;
-    },
-    handleMenuClick() {
-      if (!this.isDesktop) {
-        this.closeMenu();
+
+    const closeMenu = (): void => {
+      menuOpened.value = false;
+    };
+
+    const handleMenuClick = (): void => {
+      if (!isDesktop.value) {
+        closeMenu();
       }
-    },
-    handleResize() {
-      this.isDesktop = window.innerWidth >= 992;
-      if (this.isDesktop) {
-        this.menuOpened = false; // Ensure mobile menu is closed
+    };
+
+    const handleResize = (): void => {
+      isDesktop.value = window.innerWidth >= 992;
+      if (isDesktop.value) {
+        menuOpened.value = false;
       }
-    },
-  },
-  mounted() {
-    this.handleResize();
-    window.addEventListener("resize", this.handleResize);
-  },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.handleResize);
+    };
+
+    onMounted(() => {
+      handleResize();
+      window.addEventListener("resize", handleResize);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener("resize", handleResize);
+    });
+
+    return {
+      menuOpened,
+      isDesktop,
+      menuToggle,
+      handleMenuClick,
+    };
   },
 };
 </script>
-
-<!-- <style lang="scss" scoped>
-.menu-wrapper {
-  position: relative;
-}
-
-input {
-  display: none;
-}
-
-.menu-wrapper label {
-  position: relative;
-  width: 70px;
-  height: 30px;
-  top: 6px;
-  cursor: pointer;
-  background: transparent;
-}
-
-.menu-wrapper label:after,
-.menu-wrapper input:checked + label:after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  margin-top: -2px;
-  width: 30px;
-  height: 2px;
-  border-radius: 2px;
-  background: #42454a;
-}
-
-.menu-wrapper label .burger:before {
-  content: "";
-  position: absolute;
-  top: 6px;
-  width: 10px;
-  left: 20px;
-  height: 2px;
-  border-radius: 2px;
-  background: #42454a;
-}
-
-.menu-wrapper label .burger:after {
-  content: "";
-  position: absolute;
-  bottom: 8px;
-  width: 30px;
-  height: 2px;
-  border-radius: 2px;
-  background: #42454a;
-}
-
-.menu-list-wrapper {
-  display: none;
-}
-
-.menu-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-
-.menu-list li {
-  margin: 20px 0;
-}
-
-.menu-list li a {
-  text-decoration: none;
-  font-size: 16px;
-  color: #000;
-}
-
-.menu-inline {
-  display: flex;
-  gap: 20px;
-}
-
-.menu-slide-enter-active,
-.menu-slide-leave-active {
-  transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
-.menu-slide-enter-from {
-  transform: translateY(-100%);
-  opacity: 0;
-}
-
-.menu-slide-enter-to {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.menu-slide-leave-from {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.menu-slide-leave-to {
-  transform: translateY(-100%);
-  opacity: 0;
-}
-
-/* Desktop styles */
-@media (min-width: 992px) {
-  .menu-list-wrapper {
-    display: block !important; /* Always show inline menu on desktop */
-    position: static;
-    background: none;
-  }
-
-  label {
-    display: none; /* Hide burger menu on desktop */
-  }
-
-  .menu-list {
-    display: flex;
-    gap: 20px;
-  }
-
-  .menu-list li {
-    margin: 0;
-  }
-}
-
-@media (max-width: 992px) {
-  .menu-wrapper label {
-    display: block;
-  }
-}
-</style> -->
 
 <style lang="scss" scoped>
 .menu-wrapper {
@@ -201,7 +81,6 @@ input {
   display: none;
 }
 
-/* Label (burger icon) */
 .menu-wrapper label {
   position: relative;
   width: 70px;
