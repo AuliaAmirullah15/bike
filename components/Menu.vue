@@ -23,40 +23,51 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { ref, onMounted, onBeforeUnmount } from "vue";
+
 export default {
   name: "Menu",
-  data() {
-    return {
-      menuOpened: false,
-      isDesktop: false,
+  setup() {
+    const menuOpened = ref(false);
+    const isDesktop = ref(false);
+
+    const menuToggle = (): void => {
+      menuOpened.value = !menuOpened.value;
     };
-  },
-  methods: {
-    menuToggle() {
-      this.menuOpened = !this.menuOpened;
-    },
-    closeMenu() {
-      this.menuOpened = false;
-    },
-    handleMenuClick() {
-      if (!this.isDesktop) {
-        this.closeMenu();
+
+    const closeMenu = (): void => {
+      menuOpened.value = false;
+    };
+
+    const handleMenuClick = (): void => {
+      if (!isDesktop.value) {
+        closeMenu();
       }
-    },
-    handleResize() {
-      this.isDesktop = window.innerWidth >= 992;
-      if (this.isDesktop) {
-        this.menuOpened = false; // Ensure mobile menu is closed
+    };
+
+    const handleResize = (): void => {
+      isDesktop.value = window.innerWidth >= 992;
+      if (isDesktop.value) {
+        menuOpened.value = false;
       }
-    },
-  },
-  mounted() {
-    this.handleResize();
-    window.addEventListener("resize", this.handleResize);
-  },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.handleResize);
+    };
+
+    onMounted(() => {
+      handleResize();
+      window.addEventListener("resize", handleResize);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener("resize", handleResize);
+    });
+
+    return {
+      menuOpened,
+      isDesktop,
+      menuToggle,
+      handleMenuClick,
+    };
   },
 };
 </script>
@@ -70,7 +81,6 @@ input {
   display: none;
 }
 
-/* Label (burger icon) */
 .menu-wrapper label {
   position: relative;
   width: 70px;

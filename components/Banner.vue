@@ -38,7 +38,7 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "Banner",
 };
@@ -207,6 +207,16 @@ export default {
 
   .model-name {
     font-size: 110pt;
+  }
+}
+
+@media (max-width: 992px) {
+  .home-content__product {
+    display: none;
+  }
+
+  .model-name {
+    display: none;
   }
 }
 </style>

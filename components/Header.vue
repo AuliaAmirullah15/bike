@@ -21,15 +21,16 @@
   </nav>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import Menu from "./Menu.vue";
 
-export default {
+export default defineComponent({
   name: "Header",
   components: {
     Menu,
   },
-};
+});
 </script>
 
 <style scoped>
