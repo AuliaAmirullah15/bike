@@ -1,17 +1,21 @@
 <template>
   <nav>
     <div class="navbar">
+      <!-- Logo -->
       <div class="navbar__logo">
         <a href="/">
           <img src="@/assets/images/logo.png" alt="logo_img" />
         </a>
       </div>
+
+      <!-- Inline menu for desktop & burger menu for mobile -->
       <div class="navbar__menu">
+        <Menu />
+        <!-- Login and Signup buttons -->
         <div class="login-signup__buttons">
           <a href="/" class="login__buttons">LOGIN</a>
           <a href="/" class="signup__buttons">SIGN UP</a>
         </div>
-        <div><Menu></Menu></div>
       </div>
     </div>
   </nav>
@@ -31,14 +35,11 @@ export default {
 <style scoped>
 .navbar {
   display: flex;
-  height: auto;
   align-items: center;
-  background-color: initial;
   justify-content: space-between;
-  left: 0;
-  margin: 0 auto;
   position: absolute;
   padding: 2.7rem 2rem;
+  left: 0;
   right: 0;
   top: 0;
   z-index: 9999;
@@ -48,47 +49,60 @@ export default {
   width: 100%;
   height: 100%;
 }
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 1em;
+}
+
 .login-signup__buttons {
   display: flex;
-  margin-right: 60pt;
-  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
 }
 
 .login-signup__buttons > a {
-  margin: 0 4px;
-  align-items: center;
-  display: flex;
-  font-weight: 500;
   text-decoration: none;
-}
-.navbar__menu {
-  display: flex;
+  font-weight: 500;
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  transition: all 0.3s;
 }
 
 .login__buttons {
   background-color: #42454a;
   border: 2px solid #42454a;
   color: #fff;
-  border-radius: 0.3rem;
-  padding: 0.5rem 1rem;
-  transition: all 0.3s;
 }
 
 .signup__buttons {
   border: 2px solid #043f55;
   color: #043f55;
-  border-radius: 0.3rem;
-  padding: 0.5rem 1rem;
-  transition: all 0.3s;
 }
 
-.login-signup__buttons > a {
-  font-size: 0.8rem;
+/* Desktop styles */
+@media (min-width: 992px) {
+  .navbar__menu {
+    justify-content: flex-end;
+  }
+
+  .login-signup__buttons {
+    gap: 20px; /* More spacing for desktop */
+  }
 }
 
-@media (max-width: 992px) {
-  .navbar__logo {
-    width: 34pt;
+/* Mobile styles */
+@media (max-width: 991px) {
+  .navbar__menu {
+    flex-direction: row-reverse; /* Reverse order: login/signup first, menu last */
+  }
+
+  .login-signup__buttons {
+    gap: 10px;
   }
 }
 </style>
