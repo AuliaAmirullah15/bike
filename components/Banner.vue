@@ -44,9 +44,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/assets/sass/colours.scss" as *;
+
 .home-section {
-  background-color: #cbdeec;
+  background-color: $blue-colour;
   height: 100vh;
   position: relative;
   width: 100vw;
